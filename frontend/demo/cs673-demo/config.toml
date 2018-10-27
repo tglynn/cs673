@@ -1,0 +1,28 @@
+baseURL = "http://cs673-project-repository.s3-website.us-east-2.amazonaws.com/"
+languageCode = "en-us"
+title = "CS 673 Project Repository"
+
+theme = "hugo-cards"
+paginate = 6
+
+[params]
+  builtBy = ""
+  defaultImage = "image-1.png"
+
+  facebook = ""
+  quora = ""
+  twitter = ""
+  github = ""
+  email = ""
+
+  fbLikeBox = ""
+  fbAppId = ""
+  fbPageUrl = ""
+  fbPageTitle = ""
+
+  analytics = ""
+  disqus = ""
+
+  [params.copyright]
+     name = ""
+     link = ""

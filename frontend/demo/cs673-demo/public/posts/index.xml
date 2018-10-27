@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on CS 673 Project Repository</title>
+    <link>http://cs673-project-repository.s3-website.us-east-2.amazonaws.com/posts/</link>
+    <description>Recent content in Posts on CS 673 Project Repository</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 27 Oct 2018 10:32:31 -0400</lastBuildDate>
+    
+	<atom:link href="http://cs673-project-repository.s3-website.us-east-2.amazonaws.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Test Post</title>
+      <link>http://cs673-project-repository.s3-website.us-east-2.amazonaws.com/posts/test-post/</link>
+      <pubDate>Sat, 27 Oct 2018 10:32:31 -0400</pubDate>
+      
+      <guid>http://cs673-project-repository.s3-website.us-east-2.amazonaws.com/posts/test-post/</guid>
+      <description>An example post Midway on our life&amp;rsquo;s journey I found myself in dark woods, the right road lost. To tell about those woods is hard, so tangled and rough and savage that thinking on it now, I feel the old fear stirring. Death is hardly more bitter</description>
+    </item>
+    
+  </channel>
+</rss>
