@@ -25,3 +25,7 @@ $RECYCLE.BIN/
 auto-save-list
 tramp
 .\#*
+
+# Skip secrets
+.aws*
+*.secret
