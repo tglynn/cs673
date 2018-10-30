@@ -56,30 +56,30 @@ Bucket name: `cs673-projects-folder`
    
    ```
    {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
+      "Version": "2012-10-17",
+      "Statement": [
+         {
             "Sid": "PublicReadGetObject",
             "Effect": "Allow",
             "Principal": "*",
             "Action": "s3:GetObject",
             "Resource": "arn:aws:s3:::cs673-projects-folder/*"
-        },
-        {
+         },
+         {
             "Sid": "PublicWritePutObject",
             "Effect": "Allow",
             "Principal": "*",
             "Action": "s3:PutObject",
             "Resource": "arn:aws:s3:::cs673-projects-folder/*"
-        },
-        {
+         },
+         {
             "Sid": "PublicWritePutACLObject",
             "Effect": "Allow",
             "Principal": "*",
             "Action": "s3:PutObjectAcl",
             "Resource": "arn:aws:s3:::cs673-projects-folder/*"
-        }
-      ]
+         }
+       ]
      }
    ```
    
