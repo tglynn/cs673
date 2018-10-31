@@ -9,14 +9,19 @@ s3 = boto3.resource('s3')
 
 def lambda_handler(event, context):
     print("Received event: " + json.dumps(event, indent=2))
-    # request = json.loads(event)
-    
-    # Get the object from the event and show its content type
+    # storage bucket
     bucket = 'cs673-projects-folder'
-    key = event['content-location']
-    file = event['content']
+    # get path of POST file
+    path = event['content-location']
+    # get filename from path
+    key = path[path.rfind('/')+1:]
+    # get base64 binary stream of file
+    file = event['content']['body']
+    
     try:
+        # put file in bucket
         s3.Object(bucket,key).put(Body=file)
+        # return path to new file
         return bucket + '/' + key
     except Exception as e:
         print(e)
