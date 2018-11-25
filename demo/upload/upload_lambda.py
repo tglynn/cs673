@@ -58,9 +58,10 @@ def upload_file(s3, bucket, path, file_content, content_type, content_encoding):
     if path[0] == '/':
         path = path[1:]
     object = s3.Object(bucket, path)
-    return object.put(Body=file_content,
+    response = object.put(Body=file_content,
                           ContentEncoding=content_encoding,
                           ContentType=content_type)
+    return reponse
     
 def commit_search_tags(table, tag_data):
     """ Updates dynamodb search table with project tags """

@@ -6,6 +6,7 @@ from upload_lambda import get_required_vars, upload_file, commit_search_tags, la
 
 
 # This doesn't work with moto, cannot mock the nested functions.
+# TODO mock this more thoroughly, allow end to end test
 #class LambdaHandlerCase(unittest.TestCase):
 #    """ Tests the lambda handler """
 #
@@ -16,7 +17,7 @@ from upload_lambda import get_required_vars, upload_file, commit_search_tags, la
 #        os.environ['REGION'] = 'test_region'
 #
 #        test_event = {
-#            'content-location': '/test/test1',
+#            'content-location': '/test/test1.txt',
 #            'content-type': 'application/text',
 #            'content' : {
 #                'body': 'Test application!',
@@ -24,7 +25,7 @@ from upload_lambda import get_required_vars, upload_file, commit_search_tags, la
 #                'tag_data' : {
 #
 #                "Identifier":
-#                    ("/2018/fall/Project Upload Repository.pdf",
+#                    ("/test/test1.txt",
 #                     "Project Upload Repository"),
 #                "terms": {
 #                    "Project Upload Repository": "project_name",
