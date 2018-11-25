@@ -29,3 +29,6 @@ tramp
 # Skip secrets
 .aws*
 *.secret
+
+# Python garbage
+*.pyc
