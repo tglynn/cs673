@@ -7,7 +7,7 @@ import boto3
 
 loglevel = os.environ.get('LOGLEVEL', 'INFO').upper()
 logger = logging.getLogger()
-logger.setLevel(logging.loglevel)
+logger.setLevel(loglevel)
 
 def get_required_vars():
     """ Required environment variables:
@@ -27,21 +27,22 @@ def get_required_vars():
 
 def lambda_handler(event, context):
     bucket, search, region = get_required_vars()
-    s3 = boto3.resource('s3')
-    dynamodb = boto3.resource('dynamodb', region_name='us-east-2')
-    table = dynamodb.Table('project_search')
+    s3 = boto3.resource('s3', region_name = region)
+    dynamodb = boto3.resource('dynamodb', region_name=region)
+    table = dynamodb.Table(search)
 
     upload_response = upload_file(s3,
+                                  bucket,
                                   event['content-location'],
-                                  event['content']['body']['file'],
+                                  event['content']['body'],
                                   event['content-type'],
                                   # Get encoding if included. Default
                                   # to utf-8
-                                  event['content']['body'].get(
+                                  event['content'].get(
                                       'encoding','utf-8'))
 
     tag_response = commit_search_tags(table,
-                       event['content']['body']['tag_data'])
+                       event['content']['tag_data'])
 
     if log_clean_results(upload_response, tag_response):
         return "Project uploaded and tagged"
@@ -49,7 +50,7 @@ def lambda_handler(event, context):
         return "Error uploading and tagging project"
 
 
-def upload_response(s3, path, file_content, content_type, content_encoding):
+def upload_file(s3, bucket, path, file_content, content_type, content_encoding):
     """ Uploads a file $file_content of type $content_type and encoding 
     $content_encoding to s3, to the bucket set by $bucket, 
     using $path as the destination path"""
@@ -61,7 +62,7 @@ def upload_response(s3, path, file_content, content_type, content_encoding):
                           ContentEncoding=content_encoding,
                           ContentType=content_type)
     
-def tag_response(table, tag_data):
+def commit_search_tags(table, tag_data):
     """ Updates dynamodb search table with project tags """
     results = []
     for term in tag_data['terms']:
@@ -83,9 +84,8 @@ def tag_response(table, tag_data):
     
 def log_clean_results(upload_response, tag_response):
     results_clean = True
-    # TODO better error checking for S3
-    logger.info("File uploaded to S3 with version ID {}".format(
-        upload_response['VersionId']))
+    if upload_response['ResponseMetadata']['HTTPStatusCode'] == 200:
+        logger.info("File uploaded to S3") 
 
     for response in tag_response:
         if response['ResponseMetadata']['HTTPStatusCode'] != 200:

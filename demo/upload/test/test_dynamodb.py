@@ -11,18 +11,18 @@ def create_table():
         KeySchema=[
             {
                 'AttributeName': 'search_term',
-                'KeyType': 'HASH'  #Partition key
+                'KeyType': 'HASH',  #Partition key
             }
         ],
         AttributeDefinitions=[
             {
                 'AttributeName': 'search_term',
-                'AttributeType': 'S'
+                'AttributeType': 'S',
             }
         ],
         ProvisionedThroughput={
             'ReadCapacityUnits': 10,
-            'WriteCapacityUnits': 10
+            'WriteCapacityUnits': 10,
         }
     )
 
