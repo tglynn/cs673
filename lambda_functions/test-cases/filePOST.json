@@ -1,0 +1,10 @@
+{
+  "content-type": "application/text",
+  "content-length": "20",
+  "accept-ranges": "bytes",
+  "content-location": "/cs673-project-repository/posts/page/1/hello.txt",
+  "content-disposition": "attachment; filename=\"hello.txt\"",
+  "content": {
+    "body": "SGVsbG8sIHdvcmxkIQ=="
+  }
+}
