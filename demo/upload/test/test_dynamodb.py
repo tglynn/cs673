@@ -77,8 +77,13 @@ def add_details_to_table(details, table=None):
         dynamodb = boto3.resource('dynamodb', region_name='us-east-2', endpoint_url="http://localhost:8000")
         table = dynamodb.Table('project_details')
 
+        results = []
+        results.append(table.put_item(details))
+
+        return results
+
     results = []
-     
+
 
 
 

@@ -91,7 +91,20 @@ def commit_search_tags(table, tag_data):
 def commit_details(table, details):
 	""" Updates dynamodb details table with detailed information """
 	results = []
-	# TODO add code to update table here
+	
+	results.append(
+		table.put_item(
+			Item={
+				'project_path': details['Identifier'],
+				'project_name': details['terms']['project_name'],
+				'year': details['terms']['year'],
+				'semester': details['terms']['semester'],
+				'instructor': details['terms']['instructor'],
+				'github': details['terms']['github'],
+				'description': details['terms']['description']
+			}
+		)
+	)
 
 	return results
     
