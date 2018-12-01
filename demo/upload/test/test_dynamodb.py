@@ -78,12 +78,19 @@ def add_details_to_table(details, table=None):
         table = dynamodb.Table('project_details')
 
         results = []
-        results.append(table.put_item(details))
+    
+        results.append(
+            table.put_item(
+                Item={
+                    'project_path': details['Identifier'],
+                    'project_name': details['terms']['project_name'],
+                    'year': details['terms']['year'],
+                    'semester': details['terms']['semester'],
+                    'instructor': details['terms']['instructor'],
+                    'github': details['terms']['github'],
+                    'description': details['terms']['description']
+                }
+            )
+        )
 
         return results
-
-    results = []
-
-
-
-
