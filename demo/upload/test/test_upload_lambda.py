@@ -2,7 +2,7 @@
 
 import unittest
 from moto import mock_s3, mock_dynamodb2
-from upload_lambda import get_required_vars, upload_file, commit_search_tags, lambda_handler
+from upload_lambda import get_required_vars, upload_file, commit_search_tags, lambda_handler, commit_details
 
 
 # This doesn't work with moto, cannot mock the nested functions.
@@ -157,6 +157,58 @@ class CommitSearchCase(unittest.TestCase):
         self.assertEqual(table_read['ResponseMetadata']['HTTPStatusCode'], 200)
         self.assertTrue('/2018/fall/Project Upload Repository.pdf' in table_read['Item']['project_name'])
 
+class PutDetailsCase(unittest.TestCase):
+    """Tests the dynamodb data insert"""
+
+    @mock_dynamodb2
+    def test_detail_put(self):
+        import boto3
+
+        dynamodb = boto3.resource('dynamodb',region_name = 'us-east-2')
+
+
+        table = dynamodb.create_table(
+            TableName='project_details',
+            KeySchema=[
+                {
+                    'AttributeName': 'project_path',
+                    'KeyType': 'HASH',  #Partition key
+                }
+            ],
+            AttributeDefinitions=[
+                {
+                    'AttributeName': 'project_path',
+                    'AttributeType': 'S',
+                }
+            ],
+            ProvisionedThroughput={
+                'ReadCapacityUnits': 10,
+                'WriteCapacityUnits': 10,
+            }
+        )
+
+
+        test_data = {
+        "Identifier": "/2018/fall/Project Upload Repository.pdf",
+        "terms": {
+            "project_name": "Project Upload Repository",
+            "year": "2018",
+            "semester": "Fall",
+            "instructor": "Elentukh",
+            "github": "https://github.com/tglynn/cs673",
+            "description": "A web site hosted using AWS components that stores past CS673 projects for new students to browse and professors to manange."
+            }
+        }
+
+        results = commit_details(table, test_data)
+        print(test_data)
+        print(results)
+        for result in results:
+            self.assertEqual(result['Attributes']['project_path'], test_data['Identifier'])
+            self.assertEqual(result['Attributes']['project_name'], test_data['terms']['project_name'])
+        table_read = table.get_item(Key= {'project_path': '/2018/fall/Project Upload Repository.pdf'})
+        self.assertEqual(table_read['ResponseMetadata']['HTTPStatusCode'], 200)
+        
 
 class UploadFileCase(unittest.TestCase):
     """ Tests the s3 upload functionality """
@@ -233,10 +285,13 @@ class RequiredVarsCase(unittest.TestCase):
             del os.environ['BUCKET']
         if os.environ.get('SEARCH'):
             del os.environ['SEARCH']
+        if os.environ.get('DETAILS'):
+            del os.environ['DETAILS']
         if os.environ.get('REGION'):
             del os.environ['REGION']
         self.assertEqual(('cs673-projects-folder',
                           'project_search',
+                          'project_details',
                           'us-east-2'),
                          get_required_vars())
 
@@ -245,10 +300,12 @@ class RequiredVarsCase(unittest.TestCase):
         import os
         os.environ['BUCKET'] = 'testbucket'
         os.environ['SEARCH'] = 'testsearch'
+        os.environ['DETAILS'] = 'testdetails'
         os.environ['REGION'] = 'testregion'
 
         self.assertEqual(('testbucket',
                           'testsearch',
+                          'testdetails',
                           'testregion'),
                          get_required_vars())
 

@@ -12,24 +12,27 @@ logger.setLevel(loglevel)
 def get_required_vars():
     """ Required environment variables:
      BUCKET - destination S3 bucket name
-     SEARCH - dynamodb table name
+     SEARCH - search tags dynamodb table name
+     DETAILS - project details dynamodb table name
      REGION - region containing dynamodb table
     """
     bucket = os.environ.get('BUCKET', 'cs673-projects-folder')
     search = os.environ.get('SEARCH', 'project_search')
+    details = os.environ.get('DETAILS', 'project_details')
     region = os.environ.get('REGION', 'us-east-2')
     logger.debug(
-        "Environment variables set: bucket: {}, search: {}, region: {}".format(
-        bucket, search, region)
+        "Environment variables set: bucket: {}, search: {}, details: {}, region: {}".format(
+        bucket, search, details, region)
     )
-    return bucket, search, region
+    return bucket, search, details, region
                  
 
 def lambda_handler(event, context):
-    bucket, search, region = get_required_vars()
+    bucket, search, details, region = get_required_vars()
     s3 = boto3.resource('s3', region_name = region)
     dynamodb = boto3.resource('dynamodb', region_name=region)
-    table = dynamodb.Table(search)
+    search_table = dynamodb.Table(search)
+    details_table = dynamodb.Table(details)
 
     upload_response = upload_file(s3,
                                   bucket,
@@ -41,10 +44,13 @@ def lambda_handler(event, context):
                                   event['content'].get(
                                       'encoding','utf-8'))
 
-    tag_response = commit_search_tags(table,
+    tag_response = commit_search_tags(search_table,
                        event['content']['tag_data'])
 
-    if log_clean_results(upload_response, tag_response):
+    detail_response = commit_details(details_table,
+    					event['content'])
+
+    if log_clean_results(upload_response, tag_response, detail_response):
         return "Project uploaded and tagged"
     else:
         return "Error uploading and tagging project"
@@ -81,7 +87,26 @@ def commit_search_tags(table, tag_data):
             )
         )
     return results
-                
+
+def commit_details(table, details):
+	""" Updates dynamodb details table with detailed information """
+	results = []
+	
+	results.append(
+		table.put_item(
+			Item={
+				'project_path': details['Identifier'],
+				'project_name': details['terms']['project_name'],
+				'year': details['terms']['year'],
+				'semester': details['terms']['semester'],
+				'instructor': details['terms']['instructor'],
+				'github': details['terms']['github'],
+				'description': details['terms']['description']
+			}
+		)
+	)
+
+	return results
     
 def log_clean_results(upload_response, tag_response):
     results_clean = True
