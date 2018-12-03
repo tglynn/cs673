@@ -34,21 +34,32 @@ def lambda_handler(event, context):
     search_table = dynamodb.Table(search)
     details_table = dynamodb.Table(details)
 
+    #Extract the useful request from the API gateway call
+    r = event.get('body', None)
+    if r:
+        r = json.loads(r)
+    else:
+        return {
+            "statusCode": 400,
+            "body": "Bad or missing request"
+            }
+
+
     upload_response = upload_file(s3,
                                   bucket,
-                                  event['content-location'],
-                                  event['content']['body'],
-                                  event['content-type'],
+                                  r['content-location'],
+                                  r['content']['body'],
+                                  r['content-type'],
                                   # Get encoding if included. Default
                                   # to utf-8
-                                  event['content'].get(
+                                  r['content'].get(
                                       'encoding','utf-8'))
 
     tag_response = commit_search_tags(search_table,
-                       event['content']['tag_data'])
+                       r['content']['tag_data'])
 
     detail_response = commit_details(details_table,
-    					event['content'])
+    					r['details'])
 
     if log_clean_results(upload_response, tag_response):
         return {
@@ -101,12 +112,12 @@ def commit_details(table, details):
 		table.put_item(
 			Item={
 				'project_path': details['Identifier'],
-				'project_name': details['terms']['project_name'],
-				'year': details['terms']['year'],
-				'semester': details['terms']['semester'],
-				'instructor': details['terms']['instructor'],
-				'github': details['terms']['github'],
-				'description': details['terms']['description']
+				'project_name': details['project_name'],
+				'year': details['year'],
+				'semester': details['semester'],
+				'instructor': details['instructor'],
+				'github': details['github'],
+				'description': details['description']
 			}
 		)
 	)
