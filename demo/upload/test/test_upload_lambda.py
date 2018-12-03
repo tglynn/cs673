@@ -190,14 +190,12 @@ class PutDetailsCase(unittest.TestCase):
 
         test_data = {
         "Identifier": "/2018/fall/Project Upload Repository.pdf",
-        "terms": {
-            "project_name": "Project Upload Repository",
-            "year": "2018",
-            "semester": "Fall",
-            "instructor": "Elentukh",
-            "github": "https://github.com/tglynn/cs673",
-            "description": "A web site hosted using AWS components that stores past CS673 projects for new students to browse and professors to manange."
-            }
+        "project_name": "Project Upload Repository",
+        "year": "2018",
+        "semester": "Fall",
+        "instructor": "Elentukh",
+        "github": "https://github.com/tglynn/cs673",
+        "description": "A web site hosted using AWS components that stores past CS673 projects for new students to browse and professors to manange."
         }
 
         results = commit_details(table, test_data)
@@ -205,7 +203,7 @@ class PutDetailsCase(unittest.TestCase):
         print(results)
         for result in results:
             self.assertEqual(result['Attributes']['project_path'], test_data['Identifier'])
-            self.assertEqual(result['Attributes']['project_name'], test_data['terms']['project_name'])
+            self.assertEqual(result['Attributes']['project_name'], test_data['project_name'])
         table_read = table.get_item(Key= {'project_path': '/2018/fall/Project Upload Repository.pdf'})
         self.assertEqual(table_read['ResponseMetadata']['HTTPStatusCode'], 200)
         
