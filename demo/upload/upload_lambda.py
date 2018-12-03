@@ -82,7 +82,8 @@ def upload_file(s3, bucket, path, file_content, content_type, content_encoding):
         path = path[1:]
     object = s3.Object(bucket, path)
     #Decode content string
-    file_content = base64.b64decode(file_content)
+    if content_encoding == 'base64':
+        file_content = base64.b64decode(file_content)
     response = object.put(Body=file_content,
                           ContentEncoding=content_encoding,
                           ContentType=content_type)
