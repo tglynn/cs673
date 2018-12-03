@@ -50,11 +50,16 @@ def lambda_handler(event, context):
     detail_response = commit_details(details_table,
     					event['content'])
 
-    if log_clean_results(upload_response, tag_response, detail_response):
-        return "Project uploaded and tagged"
+    if log_clean_results(upload_response, tag_response):
+        return {
+            "statusCode": 200,
+            "body": "Project uploaded and tagged"
+            }
     else:
-        return "Error uploading and tagging project"
-
+        return {
+            "statusCode": 502,
+            "body": "Error uploading and tagging project"
+            }
 
 def upload_file(s3, bucket, path, file_content, content_type, content_encoding):
     """ Uploads a file $file_content of type $content_type and encoding 
