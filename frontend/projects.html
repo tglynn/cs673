@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/projects.css">
+
+        <title>CS 673 Project Repository</title>
+    </head>
+    <body>
+            
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+            <!-- <a class="navbar-brand" href="#"></a> -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" href="login.html">Upload Project<span class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link" href="search.html">Search Projects</a>
+                    <!-- <a class="nav-item nav-link disabled" href="#">Disabled</a> -->
+                </div>
+            </div>
+        </nav>
+
+        <!-- SEARCH BAR DISABLED FOR ALL PROJECT DISPLAY
+        <form>
+            <div class="form-group">
+                <input type="text" class="shadow-lg form-control input-lg p-4 my-5 w-50 mx-auto" id="searchbar" placeholder="Search For Projects">
+            </div>
+        </form>
+        PROJECT DISPLAY STARTS HERE -->
+
+        <div class="container-fluid mt-3">
+            <div id="projects" class="row"></div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="projectTitle">Project Title</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    Project Details
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Download</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- NEED TO IMPLEMENT PAGINATION
+        <nav class="m-5">
+            <ul class="pagination justify-content-center">
+                <li class="pagination">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav> -->
+   
+        <div class="fixed-bottom jumbotron jumbotron-fluid m-0 p-3 v-100">
+            <p class="lead">2018 Fall CS 673 Project Repository</p>
+        </div>
+
+         <!-- Bootstrap JS -->
+         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+         <script src="js/script.js"></script>
+ 
+         <!-- AWS JS SDK -->
+         <script src="https://sdk.amazonaws.com/js/aws-sdk-2.348.0.min.js"></script>
+         <script src="js/projects.js"></script>
+
+         <script type="text/javascript">
+            $(function() {
+
+                loadProjects();
+
+                $( "#projects" ).on("mouseenter", ".card", function() {
+                    $( this ).addClass( "shadow-lg");
+                    $( this ).animate({
+                        marginTop: "-=1%",
+                    }, 200);
+                });
+
+                $( "#projects" ).on("mouseleave", ".card", function() {
+                    $( this ).removeClass( "shadow-lg");
+                    $( this ).animate({
+                        marginTop: "0%",
+                    }, 200);
+                });
+
+                $( "#projects" ).on("click", ".card", function() {
+                    console.log($ ( this ));
+                });
+
+            });
+        </script>
+        
+    </body>
+</html>
