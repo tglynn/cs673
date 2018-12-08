@@ -36,7 +36,6 @@
         </div>
         END SEARCH BAR -->
 
-        <!-- Team-Members -->
 
                     <div class="input-group mb-3 w-50 mx-auto">
                         <div id="search-terms-div">
@@ -49,6 +48,11 @@
                             </div>
                         </div>
                     </div>
+
+                    
+        <div class="container-fluid mt-3">
+            <div id="projects" class="row"></div>
+        </div>
 
         <!-- Modal -->
         <div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -70,6 +74,8 @@
             </div>
             </div>
         </div>
+
+
 
         <!-- NEED TO IMPLEMENT PAGINATION
         <nav class="m-5">
@@ -100,31 +106,6 @@
          <script src="https://sdk.amazonaws.com/js/aws-sdk-2.348.0.min.js"></script>
          <script src="js/search.js"></script>
 
-         <script type="text/javascript">
-            $(function() {
-
-                //findProjects(); 
-
-                $( "#projects" ).on("mouseenter", ".card", function() {
-                    $( this ).addClass( "shadow-lg");
-                    $( this ).animate({
-                        marginTop: "-=1%",
-                    }, 200);
-                });
-
-                $( "#projects" ).on("mouseleave", ".card", function() {
-                    $( this ).removeClass( "shadow-lg");
-                    $( this ).animate({
-                        marginTop: "0%",
-                    }, 200);
-                });
-
-                $( "#projects" ).on("click", ".card", function() {
-                    console.log($ ( this ));
-                });
-
-            });
-        </script>
         
     </body>
 </html>

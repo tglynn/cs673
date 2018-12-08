@@ -31,11 +31,7 @@ $( document ).ready(function() {
         }
     });
 
-
-
 });
-
-
 
 
 
@@ -61,12 +57,6 @@ function findProjects() {
 
     };
 
-    //console.log('pre lambda invoke');
-
-    // create opening HTML tag for dynamic card population
-    // var output = "<div id='projects' class='row'>";
-	
-
 	// Feed parameters to the lambda invocation
 	lambda.invoke(params, function(error, data) {
         if (error) {
@@ -83,14 +73,15 @@ function findProjects() {
         	var filedesc = message;
 
 			console.log(message);
+			$( '#projects' ).empty();
 			
-		    for (file in filenames) {
+		    for (var i=0; i < filenames.length; i++) {
 				$( '#projects' ).append(
 					'<div class="col-md-4 col-sm-6 mb-3">' +
 						'<div class="card h-100 border-dark" data-toggle="modal" data-target="#showModal">' +
-							'<div class="card-header">' + message[0]['project_name'] + '</div>' +
+							'<div class="card-header">' + message[i]['project_name'] + '</div>' +
 							'<div class="card-body text-dark">' +
-								'<p class="card-text">' + message[0]['description'] + '</p>' +
+								'<p class="card-text">' + message[i]['description'] + '</p>' +
 							'</div>' +
 						'</div>' +
 					'</div>'
