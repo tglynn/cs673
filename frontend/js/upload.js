@@ -103,4 +103,91 @@ $( document ).ready(function() {
         }
     });
 
+    // Upload Function
+
+    $( "#upload-btn" ).click(function() {
+        var file = $("#add_project_files")[0].files[0];
+        var reader  = new FileReader();
+
+        reader.addEventListener("load", function () {
+            
+            var str = reader.result
+            var encoded_content = str.slice(str.indexOf(",") + 1);
+            var year = $.trim($( "#year" ).val());
+            var semester = $.trim($( "#semester option:selected" ).text());
+            var content_location = "/" + year + "/" + semester + "/" + file.name;
+            var project_name = $.trim($( "#project_name" ).val());
+            var instructor = $.trim($( "#instructor" ).val());
+            var description = $.trim($( "#description" ).val());
+            var github = $.trim($( "#github" ).val());
+            var pivotal_tracker = $.trim($( "#pivotal_tracker" ).val());
+            var website = $.trim($( "#website" ).val());
+
+            data_to_be_sent = {
+                "content-location": content_location,
+                "content-type": file.type,
+                "content": {
+                    "encoded_file": encoded_content,
+                    "encoding": "base64",
+                    "details": {
+                        "project_name": project_name,
+                        "year": year,
+                        "semester": semester,
+                        "instructor": instructor,
+                        "github": github,
+                        "description": description,
+                        "pivotal_tracker": pivotal_tracker,
+                        "website": website,
+                        "team_members": []
+                    },
+                    "tag_data": {
+                        "Identifier": [
+                            content_location,
+                            project_name
+                        ],
+                        "terms": {}
+                    }
+                }
+            };
+
+            $( "#add-keywords-div > div > strong" ).each(function() {
+                data_to_be_sent.content.tag_data.terms[$.trim($( this ).text()).toLowerCase()] = "keyword";
+            });
+
+            $( "#add-frameworks-div > div > strong" ).each(function() {
+                data_to_be_sent.content.tag_data.terms[$.trim($( this ).text()).toLowerCase()] = "framework";
+            });
+
+            $( "#add-programming-languages-div > div > strong" ).each(function() {
+                data_to_be_sent.content.tag_data.terms[$.trim($( this ).text()).toLowerCase()] = "programming_language";
+            });
+
+            $( "#add-team-members-div > div > strong" ).each(function() {
+                data_to_be_sent.content.details.team_members.push($.trim($( this ).text()).toLowerCase());
+            });
+
+            var request = $.ajax({
+                url: "https://yh956nkkj5.execute-api.us-east-2.amazonaws.com/default/project_uploader",
+                method: "POST",
+                data: JSON.stringify(data_to_be_sent),
+                dataType: "json"
+            });
+               
+            request.done(function( msg ) {
+                console.log('done');
+                console.log(msg);
+            });
+               
+            request.fail(function( jqXHR, textStatus ) {
+                console.log('failed');
+                console.log("Request failed: " + textStatus);
+            });
+
+        }, false);
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    });
+
 });
