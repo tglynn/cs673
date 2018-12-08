@@ -3,33 +3,49 @@ import boto3
 from boto3.dynamodb.conditions import Key
 import os
 
-DDB_TABLE = os.environ['DDB_TABLE'] # set Environment Variable: DDB_TABLE
+search = os.environ['SEARCH']
+details = os.environ['DETAILS']
 
 ddb = boto3.resource('dynamodb')
-table = ddb.Table(DDB_TABLE)
+search_table = ddb.Table(search)
+details_table = ddb.Table(details)
 
 def lambda_handler(event, context):
-    # resulting files
-    projects_found = []
+    projects_found = set()
+    for i in range(len(event['search_term'])): # list of terms: ['java', 'android']
     
-    for i in range(len(event['search_term'])): # assume set of terms: {'java', 'android'}
-    
-        # DynamoDB query outputs:{'Items':[{'project_name':StringSet,...]}
-        ddb_item = table.query(
+        # DynamoDB query outputs:{'Items':[{'project_path':StringSet,...]}
+        term_list = search_table.query(
             KeyConditionExpression=Key('search_term').eq(event['search_term'][i])
             )['Items']
-            
-        # If 0 then no items with term, skip
-        if len(ddb_item) > 0: 
-            projects_temp = ddb_item[0]['project_name']
-            projects_found = [val for val in projects_temp if not in projects_found]
-
-    if len(projects_found) > 0:
-        return {"message": projects_found #json.dumps(message)
-        }
+        #print (term_list)
+        
+        if len(term_list) > 0: # If nil then term not inDDB
+            projects_found = projects_found.union(term_list[0]['project_path'])
+    
+    projects = list(projects_found) # convert to list for JSON
+    project_details = retrieve_project_info(projects)
+    
+    ## Put project details retrieval here ##
+    print (project_details)
+    
+    if len(project_details) > 0:
+        return project_details #json.dumps(message)
+        
     else:
-        return{"message": "No projects meet any of your search criteria"}
+        return None
 
 
+def retrieve_project_info(projects): #list
+    # grab proj details DDB
+    project_details = []
+    for filepath in projects:
+        # send to DDB
+        items = details_table.query(
+            KeyConditionExpression=Key('project_path').eq(filepath))['Items']
+        #project_details.append(project)
+        if len(items) > 0:
+            project_details.append(items[0])
 
-
+    return project_details
+        
