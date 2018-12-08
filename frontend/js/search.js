@@ -88,20 +88,27 @@ function findProjects() {
 	        	var message = JSON.parse(data.Payload);
 	        	//console.log(message['name']);
 
-	        	// Break-up data:
-	        	var filenames = message;
-	        	var filedesc = message;
+	        	var s3_path = "https://s3.us-east-2.amazonaws.com/repositorytest-jwarbu"
 
 				console.log(message);
 				$( '#projects' ).empty();
 				
-			    for (var i=0; i < filenames.length; i++) {
+			    for (var i=0; i < message.length; i++) {
+			    	// break-up data for readability
+			    	var project_name = message[i]['project_name']
+			    	var project_desc = message[i]['description']
+			    	// replace spaces with '+' to match S3 path format
+			    	var project_path = message[i]['project_path'].split(' ').join('+')
+			    	console.log(project_path)
+			    	var s3_download = s3_path + project_path
+
 					$( '#projects' ).append(
 						'<div class="col-md-4 col-sm-6 mb-3">' +
 							'<div class="card h-100 border-dark" data-toggle="modal" data-target="#showModal">' +
-								'<div class="card-header">' + message[i]['project_name'] + '</div>' +
+								'<div class="card-header">' + project_name + '</div>' +
 								'<div class="card-body text-dark">' +
-									'<p class="card-text">' + message[i]['description'] + '</p>' +
+									'<p class="card-text">' + project_desc + '</p>' +
+									'<p><a href="' + s3_download + '" target="_blank">Download</a></p>' +
 								'</div>' +
 							'</div>' +
 						'</div>'
