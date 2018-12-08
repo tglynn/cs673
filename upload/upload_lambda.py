@@ -110,29 +110,29 @@ def commit_search_tags(table, tag_data):
 
 def commit_details(table, content):
 	""" Updates dynamodb details table with detailed information """
-	results = []
+    results = []
 
     details = content['details']
     Identifier = content['tag_data']['Identifier'][0]
 	
-	results.append(
-		table.put_item(
-			Item={
-				'project_path': Identifier,
-				'project_name': details['project_name'],
-				'year': details['year'],
-				'semester': details['semester'],
-				'instructor': details['instructor'],
-				'github': details['github'],
-				'description': details['description'],
+    results.append(
+    	table.put_item(
+    		Item={
+    			'project_path': Identifier,
+    			'project_name': details['project_name'],
+    			'year': details['year'],
+    			'semester': details['semester'],
+    			'instructor': details['instructor'],
+    			'github': details['github'],
+    			'description': details['description'],
                 'pivotal_tracker': details['pivotal_tracker'],
                 'website': details['website'],
                 'team_members': details['team_members']
-			}
-		)
-	)
+    		}
+    	)
+    )
 
-	return results
+    return results
     
 def log_clean_results(upload_response, tag_response):
     results_clean = True
