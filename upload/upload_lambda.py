@@ -116,15 +116,15 @@ def commit_details(table, content):
     Identifier = content['tag_data']['Identifier'][0]
 	
     results.append(
-    	table.put_item(
-    		Item={
-    			'project_path': Identifier,
-    			'project_name': details['project_name'],
-    			'year': details['year'],
-    			'semester': details['semester'],
-    			'instructor': details['instructor'],
-    			'github': details['github'],
-    			'description': details['description'],
+        table.put_item(
+            Item={
+                'project_path': Identifier,
+    		    'project_name': details['project_name'],
+    		    'year': details['year'],
+    		    'semester': details['semester'],
+    		    'instructor': details['instructor'],
+    		    'github': details['github'],
+    		    'description': details['description'],
                 'pivotal_tracker': details['pivotal_tracker'],
                 'website': details['website'],
                 'team_members': details['team_members']
