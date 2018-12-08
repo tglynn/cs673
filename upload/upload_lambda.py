@@ -121,7 +121,10 @@ def commit_details(table, details):
 				'semester': details['semester'],
 				'instructor': details['instructor'],
 				'github': details['github'],
-				'description': details['description']
+				'description': details['description'],
+                'pivotal_tracker': details['pivotal_tracker'],
+                'website': details['website'],
+                'team_members': details['team_members']
 			}
 		)
 	)
