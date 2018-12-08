@@ -111,8 +111,9 @@ function triggerLambda(params){
     AWS.config.update({region: 'us-east-2'}); // Region
 
     // REPLACE THIS WITH ACTUAL POOLID
+    //Jen's test id: us-east-2:a5d9d6fd-d823-4020-a031-7b3c98405d40
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: 'us-east-2:a5d9d6fd-d823-4020-a031-7b3c98405d40',
+        IdentityPoolId: 'us-east-2:1c5c4b60-8923-4c04-9ae9-71a82cc4f087',
     });
     var lambda = new AWS.Lambda({region: 'us-east-2', apiVersion: '2015-03-31'});
 
@@ -126,7 +127,7 @@ function triggerLambda(params){
             var message = JSON.parse(data.Payload);
             //console.log(message['name']);
 
-            var s3_path = "https://s3.us-east-2.amazonaws.com/repositorytest-jwarbu"
+            var s3_path = "https://s3.us-east-2.amazonaws.com/cs673-projects-folder"
 
             console.log(message);
             $( '#projects' ).empty();
