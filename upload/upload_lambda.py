@@ -128,8 +128,8 @@ def commit_details(table, content):
                 'pivotal_tracker': details['pivotal_tracker'],
                 'website': details['website'],
                 'team_members': details['team_members']
-    		}
-    	)
+            }
+        )
     )
 
     return results
