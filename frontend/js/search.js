@@ -96,18 +96,25 @@ function findProjects() {
 			    for (var i=0; i < message.length; i++) {
 			    	// break-up data for readability
 			    	var project_name = message[i]['project_name']
-			    	var project_desc = message[i]['description']
-			    	// replace spaces with '+' to match S3 path format
-			    	var project_path = message[i]['project_path'].split(' ').join('+')
+			    	var year = message[i]['year']
+			    	var semester = message[i]['semester']
+			    	var instructor = message[i]['instructor']
+			    	var github = message[i]['github']
+			    	var description = message[i]['description']
+			    	var project_path = message[i]['project_path'].split(' ').join('+') // replace spaces with '+' to match S3 path format
+
 			    	console.log(project_path)
+			    	
+			    	// joined strings
+			    	var subheader = semester + " " + year
 			    	var s3_download = s3_path + project_path
 
 					$( '#projects' ).append(
 						'<div class="col-md-4 col-sm-6 mb-3">' +
 							'<div class="card h-100 border-dark" data-toggle="modal" data-target="#showModal">' +
-								'<div class="card-header">' + project_name + '</div>' +
+								'<div class="card-header">' + project_name + '<br><i>' + subheader + '</i></div>' +
 								'<div class="card-body text-dark">' +
-									'<p class="card-text">' + project_desc + '</p>' +
+									'<p class="card-text">' + description + '</p>' +
 									'<p><a href="' + s3_download + '" target="_blank">Download</a></p>' +
 								'</div>' +
 							'</div>' +
