@@ -6,7 +6,7 @@ import json
 import subprocess
 
 API_URL = "https://yh956nkkj5.execute-api.us-east-2.amazonaws.com/default/project_uploader"
-PATH_TO_FILE = "./Aurelius+CS633+OL+Spring+2018.pdf"
+PATH_TO_FILE = "./test_data/Aurelius+CS633+OL+Spring+2018.pdf"
 
 with open(PATH_TO_FILE, 'rb') as f:
     rawbytes = f.read()
@@ -18,6 +18,19 @@ test_data = {
   "content": {
     "encoded_file": encoded_content,
     "encoding": "base64",
+    "details": {
+        "project_name": "aurelius",
+        "year": "2018",
+        "semester": "fall",
+        "instructor": "Elentukh",
+        "github": "github.com",
+        "description": "test description",
+        "pivotal_tracker": "pivotal",
+        "website": "website",
+        "team_members": [
+            "member1", 
+            "member2"]
+        },
     "tag_data": {
       "Identifier": [
         "/2018/Spring/Aurelius CS633 OL Spring 2018.pdf",
