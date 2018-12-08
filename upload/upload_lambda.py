@@ -60,7 +60,7 @@ def lambda_handler(event, context):
                        r['content']['tag_data'])
 
     detail_response = commit_details(details_table,
-    					r['details'])
+    					r['content'])
 
     if log_clean_results(upload_response, tag_response):
         return {
@@ -108,14 +108,17 @@ def commit_search_tags(table, tag_data):
         )
     return results
 
-def commit_details(table, details):
+def commit_details(table, content):
 	""" Updates dynamodb details table with detailed information """
 	results = []
+
+    details = content['details']
+    Identifier = content['tag_data']['Identifier'][0]
 	
 	results.append(
 		table.put_item(
 			Item={
-				'project_path': details['Identifier'],
+				'project_path': Identifier,
 				'project_name': details['project_name'],
 				'year': details['year'],
 				'semester': details['semester'],
