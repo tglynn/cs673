@@ -98,7 +98,7 @@ def commit_search_tags(table, tag_data):
                 Key = {
                     'search_term': term
                 },
-                UpdateExpression = "ADD project_name :p",
+                UpdateExpression = "ADD project_path :p",
                 ExpressionAttributeValues= {
                     # Convert identifier to `set` to prevent duplication
                     ':p' : {tag_data['Identifier'][0]},
