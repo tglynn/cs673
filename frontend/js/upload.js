@@ -107,7 +107,7 @@ $( document ).ready(function() {
 
     $( "#upload-btn" ).click(function() {
         var file = $("#add_project_files")[0].files[0];
-        var reader = new FileReader()
+        var reader = new FileReader();
 
         reader.addEventListener("load", function () {
     	    var str = reader.result
@@ -115,7 +115,7 @@ $( document ).ready(function() {
             var year = $.trim($( "#year" ).val());
             var semester = $.trim($( "#semester option:selected" ).text());
             var content_location = "/" + year + "/" + semester + "/" + file.name;
-    	    var rel_s3_path = year + "/" + semester + "/" + file.name;
+            var rel_s3_path = year + "/" + semester + "/" + file.name;
             var project_name = $.trim($( "#project_name" ).val());
             var instructor = $.trim($( "#instructor" ).val());
             var description = $.trim($( "#description" ).val());
