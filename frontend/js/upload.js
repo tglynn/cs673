@@ -163,7 +163,7 @@ $( document ).ready(function() {
             });
 
             $( "#add-team-members-div > div > strong" ).each(function() {
-                data_to_be_sent.content.details.team_members.push($.trim($( this ).text()).toLowerCase());
+                data_to_be_sent.content.details.team_members.push($.trim($( this ).text()));
             });
 
             var request = $.ajax({
