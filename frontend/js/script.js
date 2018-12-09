@@ -15,12 +15,10 @@ function triggerLambda(params) {
         } else {
             //console.log('invoke data');
             // console.log(data.Payload);
-            var message = JSON.parse(data.Payload);
+            window.message = JSON.parse(data.Payload);
             //console.log(message['name']);
 
-            var s3_path = "https://s3.us-east-2.amazonaws.com/cs673-projects-folder"
-
-            console.log(message);
+            // console.log(message);
             $( '#projects' ).empty();
             
             for (var i=0; i < message.length; i++) {
@@ -31,21 +29,18 @@ function triggerLambda(params) {
                 var instructor = message[i]['instructor']
                 var github = message[i]['github']
                 var description = message[i]['description']
-                var project_path = message[i]['project_path'].split(' ').join('+') // replace spaces with '+' to match S3 path format
 
-                console.log(project_path)
+                // console.log(project_path)
                 
                 // joined strings
                 var subheader = semester + " " + year
-                var s3_download = s3_path + project_path
 
                 $( '#projects' ).append(
                     '<div class="col-md-4 col-sm-6 mb-3">' +
-                        '<div class="card h-100 border-dark" data-toggle="modal" data-target="#showModal">' +
-                            '<div class="card-header">' + project_name + '<br><i>' + subheader + '</i></div>' +
+                        '<div id="' + i + '" class="card h-100 border-dark" data-toggle="modal" data-target="#myModal">' +
+                            '<div class="card-header">' + project_name + ', <i>' + subheader + '</i></div>' +
                             '<div class="card-body text-dark">' +
                                 '<p class="card-text">' + description + '</p>' +
-                                '<p><a href="' + s3_download + '" target="_blank">Download</a></p>' +
                             '</div>' +
                         '</div>' +
                     '</div>'

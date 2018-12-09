@@ -12,3 +12,18 @@ function loadProjects() {
 	triggerLambda(params);
 
 }
+
+// $( document ).ready(function() {
+
+    // $('#myModal').on('shown.bs.modal', function () {
+    //     project_data = message[project_selected_id];
+    //     $( "#project_name" ).text(project_data['project_name']);
+    //     $( "#project_description" ).text(project_data['description']);
+        
+    // });
+
+    // $( ".class" ).click(function() {
+    //     console.log('div');
+    // });
+
+// });
