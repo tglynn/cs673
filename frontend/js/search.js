@@ -1,7 +1,6 @@
 var search_terms = []
 $( document ).ready(function() {
-
-    // Search-Terms
+	// Search-Terms
     $( "#search-terms-btn" ).click((e) => {
         var value = $( "#search-terms-in" ).val();
         search_terms.push('"'+value+'"');
