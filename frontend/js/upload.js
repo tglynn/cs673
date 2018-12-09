@@ -107,15 +107,15 @@ $( document ).ready(function() {
 
     $( "#upload-btn" ).click(function() {
         var file = $("#add_project_files")[0].files[0];
-	var reader = new FileReader()
+        var reader = new FileReader()
 
         reader.addEventListener("load", function () {
-	    var str = reader.result
-	    var encoded_content = str.slice(str.indexOf(",") + 1);
+    	    var str = reader.result
+    	    var encoded_content = str.slice(str.indexOf(",") + 1);
             var year = $.trim($( "#year" ).val());
             var semester = $.trim($( "#semester option:selected" ).text());
             var content_location = "/" + year + "/" + semester + "/" + file.name;
-	    var rel_s3_path = year + "/" + semester + "/" + file.name;
+    	    var rel_s3_path = year + "/" + semester + "/" + file.name;
             var project_name = $.trim($( "#project_name" ).val());
             var instructor = $.trim($( "#instructor" ).val());
             var description = $.trim($( "#description" ).val());
@@ -207,12 +207,12 @@ function commitToS3(s3_params) {
     var s3 = new AWS.S3({params: {Bucket: 'cs673-projects-folder'}, apiVersion: '2006-03-01'});
 
     s3.upload({
-	Key: s3_params.s3_path,
-	Body: s3_params.uploadfile,
-	ACL: 'public-read'
-    }, function(err, data) {
-	if (err) {
-	    console.log('There was an error uploading project: ',err, err.stack);
-	}
-  });
+    	Key: s3_params.s3_path,
+    	Body: s3_params.uploadfile,
+    	ACL: 'public-read'
+        }, function(err, data) {
+    	if (err) {
+    	    console.log('There was an error uploading project: ',err, err.stack);
+    	}
+    });
 }
