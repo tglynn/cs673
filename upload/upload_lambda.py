@@ -93,6 +93,9 @@ def commit_search_tags(table, tag_data):
     """ Updates dynamodb search table with project tags """
     results = []
     for term in tag_data['terms']:
+        # Don't upload empty terms
+        if term == "":
+            continue
         results.append(
             table.update_item(
                 Key = {
