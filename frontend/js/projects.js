@@ -1,5 +1,3 @@
-/// <reference types='aws-sdk' />
-
 function loadProjects() {
     // create JSON object for parameters for invoking Lambda function
     var params = {
