@@ -60,14 +60,10 @@ def lambda_handler(event, context):
             "body": "Error uploading and tagging project"
             }
 
-    
 def commit_search_tags(table, tag_data):
     """ Updates dynamodb search table with project tags """
     results = []
     for term in tag_data['terms']:
-        # Don't upload empty terms
-        if term == "":
-            continue
         results.append(
             table.update_item(
                 Key = {
@@ -84,26 +80,27 @@ def commit_search_tags(table, tag_data):
     return results
 
 def commit_details(table, content):
-	""" Updates dynamodb details table with detailed information """
+    """ Updates dynamodb details table with detailed information """
     results = []
 
     details = content['details']
     Identifier = content['tag_data']['Identifier'][0]
-	
+    item={
+        'project_path': Identifier,
+        'project_name': details['project_name'],
+        'year': details['year'],
+        'semester': details['semester'],
+        'description': details['description'],
+        'team_members': details['team_members']
+        }
+    # Some fields are optional 
+    optional_fields = ['instructor', 'github', 'pivotal_tracker', 'website']
+    for optf in optional_fields:
+        if details[optf]:
+            item[optf] = details[optf]
     results.append(
         table.put_item(
-            Item={
-                'project_path': Identifier,
-                'project_name': details['project_name'],
-                'year': details['year'],
-                'semester': details['semester'],
-                'instructor': details['instructor'],
-                'github': details['github'],
-                'description': details['description'],
-                'pivotal_tracker': details['pivotal_tracker'],
-                'website': details['website'],
-                'team_members': details['team_members']
-            }
+            Item =  item
         )
     )
 
@@ -111,6 +108,7 @@ def commit_details(table, content):
     
 def log_clean_results(tag_response):
     results_clean = True
+
     for response in tag_response:
         if response['ResponseMetadata']['HTTPStatusCode'] != 200:
             logger.warn(
@@ -127,5 +125,3 @@ def log_clean_results(tag_response):
                 )
             )
     return results_clean
-            
-    
