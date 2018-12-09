@@ -107,15 +107,15 @@ $( document ).ready(function() {
 
     $( "#upload-btn" ).click(function() {
         var file = $("#add_project_files")[0].files[0];
-        var reader  = new FileReader();
+        var reader = new FileReader();
 
         reader.addEventListener("load", function () {
-            
-            var str = reader.result
-            var encoded_content = str.slice(str.indexOf(",") + 1);
+    	    var str = reader.result
+    	    var encoded_content = str.slice(str.indexOf(",") + 1);
             var year = $.trim($( "#year" ).val());
             var semester = $.trim($( "#semester option:selected" ).text());
             var content_location = "/" + year + "/" + semester + "/" + file.name;
+            var rel_s3_path = year + "/" + semester + "/" + file.name;
             var project_name = $.trim($( "#project_name" ).val());
             var instructor = $.trim($( "#instructor" ).val());
             var description = $.trim($( "#description" ).val());
@@ -123,12 +123,18 @@ $( document ).ready(function() {
             var pivotal_tracker = $.trim($( "#pivotal_tracker" ).val());
             var website = $.trim($( "#website" ).val());
 
+	    // Commit file to S3
+	    var s3_params = {
+		    s3_path: rel_s3_path,
+		    uploadfile: file
+	    };
+
+	    commitToS3(s3_params);
+
             data_to_be_sent = {
                 "content-location": content_location,
                 "content-type": file.type,
                 "content": {
-                    "encoded_file": encoded_content,
-                    "encoding": "base64",
                     "details": {
                         "project_name": project_name,
                         "year": year,
@@ -180,7 +186,7 @@ $( document ).ready(function() {
                
             request.fail(function( jqXHR, textStatus ) {
                 console.log('failed');
-                console.log("Request failed: " + textStatus);
+                console.log("Request failed: " , textStatus , jqXHR.status, jqXHR);
             });
 
         }, false);
@@ -191,3 +197,22 @@ $( document ).ready(function() {
     });
 
 });
+
+
+function commitToS3(s3_params) {
+    AWS.config.update({region: 'us-east-2'}); 
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: 'us-east-2:13261f3a-e497-435b-b7cd-f5e8a4f69459',
+    });
+    var s3 = new AWS.S3({params: {Bucket: 'cs673-projects-folder'}, apiVersion: '2006-03-01'});
+
+    s3.upload({
+    	Key: s3_params.s3_path,
+    	Body: s3_params.uploadfile,
+    	ACL: 'public-read'
+        }, function(err, data) {
+    	if (err) {
+    	    console.log('There was an error uploading project: ',err, err.stack);
+    	}
+    });
+}
