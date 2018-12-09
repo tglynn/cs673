@@ -16,7 +16,7 @@ function loadCardAnimation() {
     
     $( "#projects" ).on("click", ".card", function() {
         selected_project = message[$ ( this ).attr('id')];
-        // console.log(selected_project);
+        
         // modal header
         var project_name = selected_project['project_name'];
         var subheader = selected_project['semester'] + " " + selected_project['year'];
