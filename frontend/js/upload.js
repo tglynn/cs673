@@ -155,6 +155,10 @@ $( document ).ready(function() {
                     }
                 }
             };
+            // Add some description items as search terms
+            data_to_be_sent.content.tag_data.terms[instructor.toLowerCase()] = "instructor";
+            data_to_be_sent.content.tag_data.terms[year] = "year";
+            data_to_be_sent.content.tag_data.terms[semester.toLowerCase()] = "semester";
 
             $( "#add-keywords-div > div > strong" ).each(function() {
                 data_to_be_sent.content.tag_data.terms[$.trim($( this ).text()).toLowerCase()] = "keyword";
