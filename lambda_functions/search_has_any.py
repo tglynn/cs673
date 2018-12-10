@@ -16,7 +16,7 @@ def lambda_handler(event, context):
     
         # DynamoDB query outputs:{'Items':[{'project_path':StringSet,...]}
         term_list = search_table.query(
-            KeyConditionExpression=Key('search_term').eq(event['search_term'][i])
+            KeyConditionExpression=Key('search_term').eq(event['search_term'][i].lower())
             )['Items']
         #print (term_list)
         
