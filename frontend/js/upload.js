@@ -1,8 +1,21 @@
 $( document ).ready(function() {
+
+    // check for cookie
+
+    if (!getCookie("JWT")) {
+        window.open("login.html", "_self");
+    }
+
+    // logout function
+
+    $ ( "#logout" ).click(function() {
+        document.cookie = "JWT=;";
+        window.open("projects.html", "_self");
+    });
+
     // Team-Members
     
     $( "#add-team-members-btn" ).click((e) => {
-        // e.preventDefault();
         var value = $( "#add-team-members-in" ).val();
         if (value != "") {
             $( "#add-team-members-div" ).append(
@@ -20,7 +33,6 @@ $( document ).ready(function() {
 
     $( "#add-team-members-in" ).keypress((e) => {
         if ( e.which == 13 ) {
-            //    e.preventDefault();
             $( "#add-team-members-btn" ).click();
         }
     });
@@ -28,7 +40,6 @@ $( document ).ready(function() {
     // Programming-Languages
     
     $( "#add-programming-languages-btn" ).click((e) => {
-        // e.preventDefault();
         var value = $( "#add-programming-languages-in" ).val();
         if (value != "") {
             $( "#add-programming-languages-div" ).append(
@@ -46,7 +57,6 @@ $( document ).ready(function() {
 
     $( "#add-programming-languages-in" ).keypress((e) => {
         if ( e.which == 13 ) {
-            //    e.preventDefault();
             $( "#add-programming-languages-btn" ).click();
         }
     });
@@ -54,7 +64,6 @@ $( document ).ready(function() {
     // Frameworks
     
     $( "#add-frameworks-btn" ).click((e) => {
-        // e.preventDefault();
         var value = $( "#add-frameworks-in" ).val();
         if (value != "") {
             $( "#add-frameworks-div" ).append(
@@ -72,7 +81,6 @@ $( document ).ready(function() {
 
     $( "#add-frameworks-in" ).keypress((e) => {
         if ( e.which == 13 ) {
-            //    e.preventDefault();
             $( "#add-frameworks-btn" ).click();
         }
     });
@@ -80,7 +88,6 @@ $( document ).ready(function() {
     // Keywords
     
     $( "#add-keywords-btn" ).click((e) => {
-        // e.preventDefault();
         var value = $( "#add-keywords-in" ).val();
         if (value != "") {
             $( "#add-keywords-div" ).append(
@@ -98,7 +105,6 @@ $( document ).ready(function() {
 
     $( "#add-keywords-in" ).keypress((e) => {
         if ( e.which == 13 ) {
-            //    e.preventDefault();
             $( "#add-keywords-btn" ).click();
         }
     });
@@ -176,21 +182,11 @@ $( document ).ready(function() {
                 data_to_be_sent.content.details.team_members.push($.trim($( this ).text()));
             });
 
-            var request = $.ajax({
+            $.ajax({
                 url: "https://yh956nkkj5.execute-api.us-east-2.amazonaws.com/default/project_uploader",
                 method: "POST",
                 data: JSON.stringify(data_to_be_sent),
                 dataType: "json"
-            });
-               
-            request.done(function( msg ) {
-                console.log('done');
-                console.log(msg);
-            });
-               
-            request.fail(function( jqXHR, textStatus ) {
-                console.log('failed');
-                console.log("Request failed: " , textStatus , jqXHR.status, jqXHR);
             });
 
         }, false);
@@ -215,8 +211,16 @@ function commitToS3(s3_params) {
     	Body: s3_params.uploadfile,
     	ACL: 'public-read'
         }, function(err, data) {
-    	if (err) {
-    	    console.log('There was an error uploading project: ',err, err.stack);
-    	}
+            if (err) {
+                console.log('There was an error uploading project: ', err, err.stack);
+                alert('Error: ', err);
+            } else {
+                var r = confirm("Project uploaded successfully. Do you want to submit another one?");
+                if (r == true) {
+                    window.open("upload.html", "_self");
+                } else {
+                    window.open("projects.html", "_self");
+                }
+            }
     });
 }
