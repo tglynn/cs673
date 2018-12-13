@@ -45,16 +45,25 @@ function loadCardAnimation() {
             project_body += '</ul><hr>';
         }
         project_website = selected_project['website'];
-        if (project_website != "") {
+        if (typeof(project_website) !== "undefined") {
             project_body += '<strong><a href="' + project_website + '" target="_blank">Website</a></strong>';
         }
+        else{
+        	project_body += '<strong>Website</strong>'
+        }
         project_github = selected_project['github'];
-        if (project_github != "") {
+        if (typeof(project_github) !== "undefined") {
             project_body += ', <strong><a href="' + project_github + '" target="_blank">GitHub</a></strong>';
         }
+        else{
+        	project_body += ', <strong>GitHub</strong>'
+        }
         project_pivotal_tracker = selected_project['pivotal_tracker'];
-        if (project_pivotal_tracker != "") {
+        if (typeof(project_pivotal_tracker) !== "undefined") {
             project_body += ', <strong><a href="' + project_pivotal_tracker + '" target="_blank">Pivotal Tracker</a></strong>';
+        }
+        else{
+        	project_body += ', <strong>Pivotal Tracker</strong>'
         }
     
         // modal footer
